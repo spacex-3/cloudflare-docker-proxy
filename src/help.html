@@ -128,13 +128,23 @@ docker pull cloudsmith.{{host}}/public/repo/image:latest  # 拉取 Cloudsmith �
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const host = window.location.hostname;
-        const mainDomain = host;
+        const host = window.location.hostname; // 完整的主机名，例如 many.free.hr
+        const baseDomain = host.split('.').slice(-2).join('.'); // 提取主域名部分，例如 free.hr
+
         const registryConfigElement = document.getElementById('registry-config');
         const commandsElement = document.getElementById('commands');
 
+        // 替换 registry-mirrors 部分，使用完整的子域名
         registryConfigElement.innerHTML = registryConfigElement.innerHTML.replace(/{{host}}/g, host);
-        commandsElement.innerHTML = commandsElement.innerHTML.replace(/{{host}}/g, mainDomain);
+
+        // 替换 commands 部分，动态处理子域名前缀
+        commandsElement.innerHTML = commandsElement.innerHTML.replace(/{{host}}/g, `${host}`);
+
+        // 替换每个命令的动态前缀
+        const prefixes = ["docker", "quay", "gcr", "k8s-gcr", "k8s", "ghcr", "cloudsmith"];
+        prefixes.forEach(prefix => {
+            commandsElement.innerHTML = commandsElement.innerHTML.replace(new RegExp(`${prefix}.{{host}}`, 'g'), `${prefix}.${host}`);
+        });
     });
 </script>
 </body>
