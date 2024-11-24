@@ -137,13 +137,14 @@ docker pull cloudsmith.{{host}}/public/repo/image:latest  # 拉取 Cloudsmith �
         // 替换 registry-mirrors 部分，使用完整的子域名
         registryConfigElement.innerHTML = registryConfigElement.innerHTML.replace(/{{host}}/g, host);
 
-        // 替换 commands 部分，动态处理子域名前缀
-        commandsElement.innerHTML = commandsElement.innerHTML.replace(/{{host}}/g, `${host}`);
-
-        // 替换每个命令的动态前缀
+        // 替换 commands 部分，动态处理子域名前缀，确保不重复添加前缀
         const prefixes = ["docker", "quay", "gcr", "k8s-gcr", "k8s", "ghcr", "cloudsmith"];
         prefixes.forEach(prefix => {
-            commandsElement.innerHTML = commandsElement.innerHTML.replace(new RegExp(`${prefix}.{{host}}`, 'g'), `${prefix}.${host}`);
+            // 仅在前缀没有重复的情况下替换
+            commandsElement.innerHTML = commandsElement.innerHTML.replace(
+                new RegExp(`${prefix}\\.{{host}}`, 'g'),
+                `${prefix}.${host}`
+            );
         });
     });
 </script>
