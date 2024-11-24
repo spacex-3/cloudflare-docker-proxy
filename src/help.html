@@ -87,7 +87,7 @@
 <div class="container">
     <div class="content">
         <p>为了加速 Docker 镜像拉取，你可以使用以下命令设置 registry mirror:</p>
-        <pre><code>sudo tee /etc/docker/daemon.json <<EOF
+        <pre><code>sudo tee /etc/docker/daemon.json &lt;&lt;EOF
 {
     "registry-mirrors": ["https://docker.many.free.hr"]
 }
