@@ -87,37 +87,37 @@
 <div class="container">
     <div class="content">
         <p>为了加速 Docker 镜像拉取，你可以使用以下命令设置 registry mirror:</p>
-        <pre><code id="registry-config">sudo tee /etc/docker/daemon.json &lt;&lt;EOF
+        <pre><code>sudo tee /etc/docker/daemon.json <<EOF
 {
-    "registry-mirrors": ["https://{{host}}"]
+    "registry-mirrors": ["https://docker.many.free.hr"]
 }
 EOF
 # 配置完后需要重启 Docker 服务
 sudo systemctl restart docker
 </code></pre>
         <p>使用该代理从不同的镜像仓库拉取镜像，请参考以下命令：</p>
-        <pre><code id="commands">
+        <pre><code>
 # docker pull nginx:latest
-docker pull docker.{{host}}/library/nginx:latest  # 拉取 Docker 官方镜像
+docker pull docker.many.free.hr/library/nginx:latest  # 拉取 Docker 官方镜像
 
 # docker pull quay.io/coreos/etcd:latest
-docker pull quay.{{host}}/coreos/etcd:latest  # 拉取 Quay 镜像
+docker pull quay.many.free.hr/coreos/etcd:latest  # 拉取 Quay 镜像
 
 # docker pull gcr.io/google-containers/busybox:latest
-docker pull gcr.{{host}}/google-containers/busybox:latest  # 拉取 GCR 镜像
+docker pull gcr.many.free.hr/google-containers/busybox:latest  # 拉取 GCR 镜像
 
 # docker pull k8s.gcr.io/pause:latest
-docker pull k8s-gcr.{{host}}/pause:latest  # 拉取 k8s.gcr.io 镜像
+docker pull k8s-gcr.many.free.hr/pause:latest  # 拉取 k8s.gcr.io 镜像
 
 # docker pull registry.k8s.io/pause:latest
-docker pull k8s.{{host}}/pause:latest  # 拉取 registry.k8s.io 镜像
+docker pull k8s.many.free.hr/pause:latest  # 拉取 registry.k8s.io 镜像
 
 # docker pull ghcr.io/github/super-linter:latest
-docker pull ghcr.{{host}}/github/super-linter:latest  # 拉取 GitHub 容器镜像
+docker pull ghcr.many.free.hr/github/super-linter:latest  # 拉取 GitHub 容器镜像
 
 # docker pull docker.cloudsmith.io/public/repo/image:latest
-docker pull cloudsmith.{{host}}/public/repo/image:latest  # 拉取 Cloudsmith 镜像
-</code></pre>
+docker pull cloudsmith.many.free.hr/public/repo/image:latest  # 拉取 Cloudsmith 镜像
+        </code></pre>
         <p>为了避免 Worker 用量耗尽，你可以手动 pull 镜像然后 re-tag 之后 push 至本地镜像仓库。</p>
     </div>
 </div>
@@ -126,43 +126,5 @@ docker pull cloudsmith.{{host}}/public/repo/image:latest  # 拉取 Cloudsmith �
     <p><a href="https://www.lixueduan.com/posts/docker/12-docker-mirror/" target="_blank">基于 Cloudflare Workers 和 cloudflare-docker-proxy 搭建镜像加速服务</a></p>
     <p><a href="https://lixueduan.com" target="_blank">访问博客 探索云原生</a></p>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const host = window.location.hostname; // 完整的主机名，例如 many.free.hr
-        const registryConfigElement = document.getElementById('registry-config');
-        const commandsElement = document.getElementById('commands');
-
-        // 替换 registry-mirrors 部分，使用完整子域名
-        registryConfigElement.innerHTML = registryConfigElement.innerHTML.replace(/{{host}}/g, host);
-
-        // 替换 commands 部分，拼接正确的域名
-        const commands = `
-# docker pull nginx:latest
-docker pull docker.${host}/library/nginx:latest  # 拉取 Docker 官方镜像
-
-# docker pull quay.io/coreos/etcd:latest
-docker pull quay.${host}/coreos/etcd:latest  # 拉取 Quay 镜像
-
-# docker pull gcr.io/google-containers/busybox:latest
-docker pull gcr.${host}/google-containers/busybox:latest  # 拉取 GCR 镜像
-
-# docker pull k8s.gcr.io/pause:latest
-docker pull k8s-gcr.${host}/pause:latest  # 拉取 k8s.gcr.io 镜像
-
-# docker pull registry.k8s.io/pause:latest
-docker pull k8s.${host}/pause:latest  # 拉取 registry.k8s.io 镜像
-
-# docker pull ghcr.io/github/super-linter:latest
-docker pull ghcr.${host}/github/super-linter:latest  # 拉取 GitHub 容器镜像
-
-# docker pull docker.cloudsmith.io/public/repo/image:latest
-docker pull cloudsmith.${host}/public/repo/image:latest  # 拉取 Cloudsmith 镜像
-        `;
-
-        // 直接覆盖 commands 部分内容
-        commandsElement.innerHTML = commands;
-    });
-</script>
-
 </body>
 </html>
