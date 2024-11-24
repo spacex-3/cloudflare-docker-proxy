@@ -129,7 +129,7 @@ docker pull cloudsmith.{{host}}/public/repo/image:latest  # 拉取 Cloudsmith �
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const host = window.location.hostname;
-        const mainDomain = host.split('.').slice(-2).join('.');
+        const mainDomain = host;
         const registryConfigElement = document.getElementById('registry-config');
         const commandsElement = document.getElementById('commands');
 
